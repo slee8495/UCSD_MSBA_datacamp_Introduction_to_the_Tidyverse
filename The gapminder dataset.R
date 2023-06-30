@@ -35,3 +35,16 @@ gapminder_1952 %>% ggplot2::ggplot(aes(x = pop, y = lifeExp)) +
   ggplot2::scale_x_log10() +
   ggplot2::scale_y_log10() 
 
+
+gapminder_1952 <- gapminder %>%
+  filter(year == 1952)
+
+gapminder_1952 %>% 
+  ggplot2::ggplot(aes(x = pop, y = lifeExp, color = continent)) +
+  ggplot2::geom_point() +
+  ggplot2::scale_x_log10() 
+
+
+ggplot(gapminder_1952, aes(x = pop, y = lifeExp, color = continent, size = gdpPercap)) +
+  geom_point() +
+  scale_x_log10()
