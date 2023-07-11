@@ -117,3 +117,72 @@ gapminder %>%
 by_continent_2007 %>% 
   ggplot2::ggplot(aes(x = medianGdpPercap, y = medianLifeExp, color = continent)) +
   ggplot2::geom_point()
+
+
+by_year <- gapminder %>%
+  group_by(year) %>%
+  summarize(medianGdpPercap = median(gdpPercap))
+
+
+by_year %>% 
+  ggplot2::ggplot(aes(x = year, y = medianGdpPercap)) +
+  ggplot2::geom_line() +
+  ggplot2::expand_limits(y = 0)
+
+
+
+by_year_continent <- gapminder %>%
+  group_by(year, continent) %>%
+  summarize(medianGdpPercap = median(gdpPercap))
+
+by_year_continent %>% 
+  ggplot2::ggplot(aes(x = year, y = medianGdpPercap, color = continent)) +
+  ggplot2::geom_line() +
+  ggplot2::expand_limits(y = 0)
+
+
+gapminder %>% 
+  dplyr::filter(year == 1952) %>% 
+  dplyr::group_by(continent) %>% 
+  dplyr::summarise(medianGdpPercap = median(gdpPercap)) -> by_continent
+
+by_continent %>% 
+  ggplot2::ggplot(aes(x = continent, y = medianGdpPercap)) +
+  ggplot2::geom_col()
+
+gapminder %>% 
+  dplyr::filter(year == 1952, continent == "Oceania") -> oceania_1952
+
+oceania_1952 %>% 
+  ggplot2::ggplot(aes(x = country, y = gdpPercap)) +
+  ggplot2::geom_col()
+
+gapminder_1952 <- gapminder %>%
+  filter(year == 1952) %>%
+  mutate(pop_by_mil = pop / 1000000)
+
+gapminder_1952 %>% 
+  ggplot2::ggplot(aes(x = pop_by_mil)) +
+  ggplot2::geom_histogram(bins = 50)
+
+gapminder_1952 <- gapminder %>%
+  filter(year == 1952)
+
+gapminder_1952 %>% 
+  ggplot2::ggplot(aes(x = pop)) +
+  ggplot2::geom_histogram() +
+  ggplot2::scale_x_log10()
+
+gapminder_1952 <- gapminder %>%
+  filter(year == 1952)
+
+gapminder_1952 %>% 
+  ggplot2::ggplot(aes(x = continent, y = gdpPercap)) +
+  ggplot2::geom_boxplot() +
+  ggplot2::scale_y_log10()
+
+
+ggplot(gapminder_1952, aes(x = continent, y = gdpPercap)) +
+  geom_boxplot() +
+  scale_y_log10() +
+  ggplot2::labs(title = "Comparing GDP per capita across continents")
